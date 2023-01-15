@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  gb_flask:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    container_name: gb_flask
+    environment:
+      SQLALCHEMY_DATABASE_URI: postgresql://user:password@pg:5432/gb_web
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+
+  database:
+    image: postgres:12.7-alpine
+    container_name: pg
+    environment:
+      POSTGRES_DB: gb_web
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+
+
+volumes:
+  pgdata:
