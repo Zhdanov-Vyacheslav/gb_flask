@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask_login import logout_user, login_user, login_required
+from flask_login import logout_user, login_user, login_required, current_user
 from werkzeug.security import check_password_hash
+
+from ..models import User
 
 auth = Blueprint("auth", __name__, url_prefix="/auth", static_folder="../static")
 
@@ -8,10 +10,11 @@ auth = Blueprint("auth", __name__, url_prefix="/auth", static_folder="../static"
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
+        if current_user.is_authenticated:
+            return redirect(url_for("user.profile", pk=current_user.id))
         return render_template(
             "auth/login.html"
         )
-    from ..models import User
 
     email = request.form.get("email")
     password = request.form.get("password")
