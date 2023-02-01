@@ -36,7 +36,6 @@ def register_user():
     return render_template("users/register.html", form=form, errors=errors)
 
 
-
 @user.route("/")
 @login_required
 def user_list():
