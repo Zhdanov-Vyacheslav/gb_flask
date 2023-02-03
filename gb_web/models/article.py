@@ -4,6 +4,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
 from ..app import db
+from .tags_articles import tags_articles
 
 
 class Article(db.Model):
@@ -17,3 +18,4 @@ class Article(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     author = relationship("Author", back_populates="articles")
+    tags = relationship("Tag", secondary=tags_articles, back_populates="articles")
