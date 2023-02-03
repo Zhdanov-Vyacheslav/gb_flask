@@ -33,6 +33,20 @@ def get_article(pk: int):
     )
 
 
+@article.route("/tag/<int:pk>", methods=["GET"])
+@login_required
+def get_articles_by_tag(pk: int):
+    _tag = Tag.query.filter_by(id=pk).options(joinedload(Tag.articles)).one_or_none()
+    if _tag is None:
+        raise NotFound("Article id:{}, not found".format(pk))
+    _articles = _tag.articles
+    return render_template(
+        "articles/list.html",
+        articles=_articles,
+        tag=_tag.name
+    )
+
+
 @article.route("/create", methods=["GET"])
 @login_required
 def create_article_form():
