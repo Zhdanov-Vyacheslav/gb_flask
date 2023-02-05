@@ -11,5 +11,5 @@ VIEWS = [
     index,
     report,
     article,
-    auth
+    auth,
 ]
