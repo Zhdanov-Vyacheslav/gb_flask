@@ -1,14 +1,17 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Column, Integer
 from sqlalchemy.orm import relationship
 
-from ..app import db
+from gb_web.extensions import db
 
 
 class Author(db.Model):
     __tablename__ = "authors"
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey("users.id"), nullable=False)
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     user = relationship("User", back_populates="author")
     articles = relationship("Article", back_populates="author")
+
+    def __str__(self):
+        return self.user.email

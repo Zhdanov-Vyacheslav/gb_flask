@@ -1,10 +1,10 @@
-from sqlalchemy import Table, ForeignKey
+from sqlalchemy import Table, ForeignKey, Column, Integer
 
 from ..extensions import db
 
 tags_articles = Table(
     "tags_articles",
     db.metadata,
-    db.Column("article_id", db.Integer, ForeignKey("articles.id"), nullable=False),
-    db.Column("tag_id", db.Integer, ForeignKey("tags.id"), nullable=False)
+    Column("article_id", Integer, ForeignKey("articles.id"), nullable=False),
+    Column("tag_id", Integer, ForeignKey("tags.id"), nullable=False)
 )
