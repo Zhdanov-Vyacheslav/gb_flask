@@ -5,7 +5,8 @@ from json import load
 
 from commands import COMMANDS
 from .admin.views import TagAdminView, UserAdminView
-from .extensions import db, login_manager, migrate, csrf, admin
+from .api.routes import register_api_routes
+from .extensions import db, login_manager, migrate, csrf, admin, api
 from .models import User, Tag
 from .views import VIEWS
 
@@ -18,21 +19,24 @@ DATABASE_URI = getenv("SQLALCHEMY_DATABASE_URI", None)
 
 def create_app() -> Flask:
     app = Flask(__name__)
-    app.config.from_file(CONFIG_PATH, load)
+    app.config.from_json(CONFIG_PATH, load)
     if DATABASE_URI:
         app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+
     register_extensions(app)
     register_blueprints(app)
     register_commands(app)
     register_admin_views()
+    register_api_routes(api)
     return app
 
 
-def register_extensions(app):
+def register_extensions(app: Flask):
     db.init_app(app)
     migrate.init_app(app, db, compare_type=True)
     csrf.init_app(app)
     admin.init_app(app)
+    api.init_app(app)
 
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
