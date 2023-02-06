@@ -1,13 +1,12 @@
 import click
 from werkzeug.security import generate_password_hash
 
-from gb_web.extensions import db
-import gb_web.extensions
-
 
 @click.command("init-db", help="create all db")
 def init_db():
     from wsgi import app
+    from gb_web.extensions import db
+
     with app.app_context():
         db.create_all()
 
@@ -15,6 +14,8 @@ def init_db():
 @click.command("create-users", help="create users")
 def create_users():
     from gb_web.models import User
+    from gb_web.extensions import db
+
     from wsgi import app
 
     with app.app_context():
@@ -40,6 +41,8 @@ def create_users():
 @click.command("create-tags", help="create tags")
 def create_tags():
     from gb_web.models.tag import Tag
+    from gb_web.extensions import db
+
     from wsgi import app
 
     with app.app_context():

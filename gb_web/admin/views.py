@@ -3,19 +3,6 @@ from flask_admin import AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 
-from gb_web.models import Tag, User
-from gb_web.extensions import db
-
-from ..extensions import admin
-
-
-# Если не добавлять endpoint, происходит конфликт с базовыми blueprint`ами, а name отвечает только за имя в меню в
-# итоге либо менять имя у всех blueprint`ов (для создания стандарта) или использовать endpoint, а вынесено в отельную
-# функцию, для того чтобы исключить цикличный импорт, идея как сделать "красивее" может прийти позже, а пока так...
-def admin_views_init():
-    admin.add_view(TagAdminView(Tag, db.session, endpoint="a_tag", category="Models"))
-    admin.add_view(UserAdminView(User, db.session, endpoint="a_user", category="Models"))
-
 
 class CustomAdminIndexView(AdminIndexView):
 

@@ -4,9 +4,9 @@ from flask import Flask
 from json import load
 
 from commands import COMMANDS
-from .admin.views import admin_views_init
+from .admin.views import TagAdminView, UserAdminView
 from .extensions import db, login_manager, migrate, csrf, admin
-from .models import User
+from .models import User, Tag
 from .views import VIEWS
 
 base_dir = path.dirname(__file__)
@@ -24,7 +24,7 @@ def create_app() -> Flask:
     register_extensions(app)
     register_blueprints(app)
     register_commands(app)
-    # register_admin_views()
+    register_admin_views()
     return app
 
 
@@ -53,4 +53,9 @@ def register_commands(app: Flask):
 
 
 def register_admin_views():
-    admin_views_init()
+    # Если не добавлять endpoint, происходит конфликт с базовыми blueprint`ами, а name отвечает только за имя в меню в
+    # итоге либо менять имя у всех blueprint`ов (для создания стандарта) или использовать endpoint, а вынесено в
+    # отельную функцию, для того чтобы исключить цикличный импорт, идея как сделать "красивее"
+    # может прийти позже, а пока так...
+    admin.add_view(TagAdminView(Tag, db.session, endpoint="a_tag", category="Models"))
+    admin.add_view(UserAdminView(User, db.session, endpoint="a_user", category="Models"))
