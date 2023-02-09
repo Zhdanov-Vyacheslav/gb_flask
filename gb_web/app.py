@@ -1,5 +1,6 @@
 from os import getenv, path
 
+from combojsonapi.permission import PermissionPlugin
 from combojsonapi.event import EventPlugin
 from combojsonapi.spec import ApiSpecPlugin
 from flask import Flask
@@ -37,7 +38,7 @@ def create_app() -> Flask:
 def register_extensions(app: Flask):
     db.init_app(app)
     migrate.init_app(app, db, compare_type=True)
-    csrf.init_app(app)
+    # csrf.init_app(app)
     admin.init_app(app)
     api.init_app(app)
 
@@ -77,4 +78,5 @@ def register_api_plugins(app: Flask):
     }
     api.plugins.append(ApiSpecPlugin(app=app, tags=tags))
     api.plugins.append(EventPlugin())
+    api.plugins.append(PermissionPlugin())
     api.init_plugins()
