@@ -2,7 +2,7 @@ from flask_combo_jsonapi import ResourceList, ResourceDetail
 
 from gb_web.extensions import db
 from gb_web.models import Tag
-from gb_web.shemas import TagSchema
+from ..schemas import TagSchema
 
 
 class TagDetail(ResourceDetail):

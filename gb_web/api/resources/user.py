@@ -1,9 +1,9 @@
 from flask_combo_jsonapi import ResourceList, ResourceDetail
 
-from gb_web.api.pervisions import UserPermission
 from gb_web.extensions import db
 from gb_web.models import User
-from gb_web.shemas import UserSchema
+from ..permissions import UserPermission
+from ..schemas import UserSchema
 
 
 class UserDetail(ResourceDetail):

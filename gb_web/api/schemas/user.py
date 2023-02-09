@@ -4,10 +4,10 @@ from marshmallow_jsonapi import Schema, fields
 
 class UserSchema(Schema):
     class Meta:
-        type_ = "article"
-        self_url = "article_detail"
+        type_ = "user"
+        self_url = "user_detail"
         self_url_kwargs = {"id": "<id>"}
-        self_url_many = "article_list"
+        self_url_many = "user_list"
 
     id = fields.Int(as_string=True)
     email = fields.Str(allow_none=False, required=True)
