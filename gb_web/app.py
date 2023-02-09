@@ -1,5 +1,7 @@
 from os import getenv, path
 
+from combojsonapi.event import EventPlugin
+from combojsonapi.spec import ApiSpecPlugin
 from flask import Flask
 from json import load
 
@@ -27,6 +29,7 @@ def create_app() -> Flask:
     register_blueprints(app)
     register_commands(app)
     register_admin_views()
+    register_api_plugins(app)
     register_api_routes(api)
     return app
 
@@ -63,3 +66,15 @@ def register_admin_views():
     # может прийти позже, а пока так...
     admin.add_view(TagAdminView(Tag, db.session, endpoint="a_tag", category="Models"))
     admin.add_view(UserAdminView(User, db.session, endpoint="a_user", category="Models"))
+
+
+def register_api_plugins(app: Flask):
+    tags = {
+        "Tag": "Tags API",
+        "Article": "Tags API",
+        "User": "Tags API",
+        "Author": "Tags API",
+    }
+    api.plugins.append(ApiSpecPlugin(app=app, tags=tags))
+    api.plugins.append(EventPlugin())
+    api.init_plugins()

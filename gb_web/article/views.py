@@ -21,6 +21,14 @@ def article_list():
     )
 
 
+@article.route("/publications", methods=["GET"])
+@login_required
+def publications():
+    return render_template(
+        "articles/publications.html"
+    )
+
+
 @article.route("/<int:pk>", methods=["GET"])
 @login_required
 def get_article(pk: int):
