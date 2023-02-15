@@ -13,16 +13,16 @@ from .extensions import db, login_manager, migrate, csrf, admin, api
 from .models import User, Tag
 from .views import VIEWS
 
-base_dir = path.dirname(__file__)
-
-config_dir = base_dir[:base_dir.rfind("/")] if base_dir.rfind("/") != -1 else base_dir[:base_dir.rfind("\\")]
-CONFIG_PATH = getenv("CONFIG_PATH", path.join(config_dir, "dev_config2.json"))
+CONFIG_PATH = getenv("CONFIG_PATH", path.join(path.dirname(__file__), "config.json"))
 DATABASE_URI = getenv("SQLALCHEMY_DATABASE_URI", None)
+SECRET_KEY = getenv("SECRET_KEY", None)
 
 
 def create_app() -> Flask:
     app = Flask(__name__)
     app.config.from_json(CONFIG_PATH, load)
+    if SECRET_KEY:
+        app.config["SECRET_KEY"] = SECRET_KEY
     if DATABASE_URI:
         app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
 
